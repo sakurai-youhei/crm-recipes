@@ -7,3 +7,5 @@ class Formatter {
     console.log(context);
   }
 }
+
+export { Formatter };
