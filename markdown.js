@@ -4,6 +4,6 @@ class Formatter {
   }
   
   test() {
-    console.log(context);
+    console.log(this.context);
   }
 }
