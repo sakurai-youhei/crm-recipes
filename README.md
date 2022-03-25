@@ -12,7 +12,7 @@ const context = {
 };
 
 class Formatter {
-    constructor({reset, offset, insertBefore, insertAfter, prependEveryLine} = {}) {
+    constructor({ reset, offset, insertBefore, insertAfter, prependEveryLine } = {}) {
         this.reset = reset;
         this.offset = offset;
         this.insertBefore = insertBefore;
@@ -55,6 +55,17 @@ class TextAreaFormatter extends Formatter {
         const cur = this.cursor(start, end);
         element.selectionStart = cur.start;
         element.selectionEnd = cur.end;
+    }
+}
+
+class SelectionFormatter extends Formatter {
+    run(selection) {
+        const range = selection.getRangeAt(0);
+        const start = range.startOffset, end = range.endOffset;
+        range.startContainer.replaceData(start, end - start, this.transform(range.startContainer.data.slice(start, end)));
+        const cur = this.cursor(start, end);
+        range.setStart(range.startContainer, cur.start);
+        range.setEnd(range.startContainer, cur.end);
     }
 }
 
