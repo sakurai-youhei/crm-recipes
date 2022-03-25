@@ -35,7 +35,7 @@ class Formatter {
     }
 }
 
-global.TextAreaFormatter = class extends Formatter {
+class TextAreaFormatter extends Formatter {
     run(element) {
         const start = element.selectionStart, end = element.selectionEnd;
         element.value = element.value.slice(0, start) + this.transform(element.value.slice(start, end)) + element.value.slice(end);
