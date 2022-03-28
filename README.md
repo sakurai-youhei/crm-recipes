@@ -62,7 +62,22 @@ class SelectionFormatter extends Formatter {
     run(selection) {
         const range = selection.getRangeAt(0);
         const start = range.startOffset, end = range.endOffset;
-        range.startContainer.replaceData(start, end - start, this.transform(range.startContainer.data.slice(start, end)));
+        if (range.startContainer === range.endContainer) {
+            range.startContainer.replaceData(start, end - start, this.transform(range.startContainer.data.slice(start, end)));
+        } else {
+            let start2end = false;
+            Object.values(range.commonAncestorContainer.childNodes).filter((el) => {
+                start2end = el == range.startContainer.parentElement ? !start2end : start2end;
+                if (start2end) {
+                    start2end = el == range.endContainer.parentElement ? !start2end : start2end;
+                    return true;
+                } else {
+                    return false;
+                }
+            }).forEach((el) => {
+                el.innerText = this.transform(el.innerText);
+            });
+        }
         const cur = this.cursor(start, end);
         range.setStart(range.startContainer, cur.start);
         range.setEnd(range.startContainer, cur.end);
